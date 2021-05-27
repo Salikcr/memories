@@ -20,15 +20,15 @@ const Form = ({currentId,setCurrentId}) => {
       if(post) setPostData(post);
     },[post])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(currentId){
-          dispatch(updatePost(currentId,postData));
+          await dispatch(updatePost(currentId,postData));
         }
         else{
 
-        dispatch(createPost(postData));
+        await dispatch(createPost(postData));
     }
     clear();
   }

@@ -5,6 +5,7 @@ import memories from '../../images/memories.png';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useHistory,useLocation } from 'react-router-dom';
+import decode from 'jwt-decode';
 
 const Navbar = () => {
     
@@ -15,13 +16,24 @@ const Navbar = () => {
     const location  = useLocation();
 
     const logout = () => {
+      // console.log('logout');
       dispatch({type : "LOGOUT"});
       history.push('/');
       setUser(null);
+      console.log(user);
+
     }
 
     useEffect(() => {
       const token = user?.token;
+      if(token)
+      {
+        const decodedToken = decode(token);
+        if(decodedToken.exp * 1000 < new Date().getTime()) // milliseconds
+        {
+          logout();
+        }
+      }
       setUser(JSON.parse(localStorage.getItem('profile')));
 
     },[location]);
